@@ -67,9 +67,9 @@ Add PropertySplitCity Nvarchar(255)
 
 UPDATE [dbo].[Nashville Housing Data]
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress)+1, LEN(PropertyAddress))
-
-
-
+```
+I had to do the same as previous issue with the Owner Address column as it was in the same state
+```
 /* Seperate OwnerAddress into three columns (Address, City, State)*/
 
 SELECT OwnerAddress 
@@ -99,10 +99,10 @@ Add OwnerSplitState Nvarchar(255)
 
 UPDATE [dbo].[Nashville Housing]
 SET OwnerSplitState = ParseName(REPLACE(OwnerAddress, ',','.'), 1)
-
-
-
-/*Change Y and N to Yes and no in 'sold as vacant'*/
+```
+Lastly I discerned the what the 0 and 1 meant in the column and had to create an extra column with the corrected values for use in analysis
+```
+/*Change 1 and 0 to Yes and no in 'sold as vacant'*/
 
 SELECT DISTINCT(SoldAsVacant), count(SoldAsVacant)
 FROM [dbo].[Nashville Housing]
@@ -111,8 +111,6 @@ Order By SoldAsVacant
 
 ALTER TABLE [dbo].[Nashville Housing]
 ALTER COLUMN SoldAsVacant Varchar;
-
-
 
 SELECT *,
 Case WHEN SoldAsVacant = '1' THEN 'YES'
